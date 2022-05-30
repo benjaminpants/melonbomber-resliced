@@ -215,7 +215,7 @@ function GM:RoundsThink()
 				c = c + 1
 			end
 		end
-		if c >= 2 && self.RoundWaitForPlayers + self.StartWaitTime:GetFloat() < CurTime() then
+		if c >= 2 && self.StartWaitTime:GetFloat() < CurTime() then
 			self:SetupRound()
 		end
 	elseif self:GetGameState() == 1 then

@@ -200,16 +200,18 @@ addModel("refugee02", "male")
 addModel("refugee03", "male")
 addModel("refugee04", "male")
 
+
 function GM:PlayerSetModel( ply )
 
 	local cl_playermodel = ply:GetInfo( "cl_playermodel" )
-
+	
 	local playerModel = table.Random(playerModels)
 	cl_playermodel = playerModel.model
-
+	
 	local modelname = player_manager.TranslatePlayerModel( cl_playermodel )
 	util.PrecacheModel( modelname )
 	ply:SetModel( modelname )
+	
 	ply.ModelSex = playerModel.sex
 
 end
@@ -404,8 +406,23 @@ function GM:PlayerDeath(ply, inflictor, attacker )
 		if ( !IsValid( inflictor ) ) then inflictor = attacker end
 
 	end
-
-	self:RagdollSetDeathDetails(ply, inflictor, attacker)
+	
+	--self:RagdollSetDeathDetails(ply, inflictor, attacker)
+	
+	Msg("Got kill");
+	Msg("attacker:GetName()" .. " killed" .. ply:GetName());
+	local cte = ChatText()
+	cte:Add("Dead!")
+	cte:SendAll()
+	local ct = ChatText()
+	local col = attacker:GetPlayerColor()
+	col = Color(col.r * 255, col.g * 255, col.b * 255)
+	ct:Add(attacker:GetName(), col)
+	ct:Add(" killed ")
+	local cole = ply:GetPlayerColor()
+	cole = Color(cole.r * 255, cole.g * 255, cole.b * 255)
+	ct:Add(ply:GetName(), cole)
+	ct:SendAll()
 
 	self:AddKillFeed(ply, inflictor, attacker)
 end

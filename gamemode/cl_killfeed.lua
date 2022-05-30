@@ -7,7 +7,6 @@ net.Receive("kill_feed_add", function (len)
 	local attacker = net.ReadEntity()
 	local damageType = net.ReadUInt(32)
 	if !IsValid(ply) then return end
-
 	local t = {}
 	t.time = CurTime()
 	t.player = ply
@@ -29,7 +28,7 @@ net.Receive("kill_feed_add", function (len)
 		local col = ply:GetPlayerColor()
 		col = Color(col.x * 255, col.y * 255, col.z * 255)
 		table.insert(t.text, col)
-		table.insert(t.text, ply:GetName())
+		table.insert(t.text, ply:GetName())		
 	elseif t.damageType == DMG_AIRBOAT then
 		table.insert(t.text, Color(170, 10, 10))
 		table.insert(t.text, "Death blocks")
