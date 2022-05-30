@@ -117,8 +117,14 @@ end
 // remote detonation
 // models/props_rooftop/roof_dish001.mdl
 
-local pick = addPickup(9, "item_preserve", "Item Preservation", Color(255, 166, 0), "models/props_junk/TrafficCone001a.mdl", 1)
+local pick = addPickup(9, "item_preserve", "Item Preservation", Color(255, 166, 0), "models/props_junk/TrafficCone001a.mdl", 2)
 pick.AddScale = 0.7
 pick.Description = "Makes your bombs unable to destroy pickups"
+function pick:OnPickup(ply)
+end
+
+local pick = addPickup(10, "future_vision", "Future Vision", Color(205, 215, 221), "models/barneyhelmet_faceplate.mdl", 1)
+pick.AddScale = 1.3
+pick.Description = "See what your bombs will explode"
 function pick:OnPickup(ply)
 end

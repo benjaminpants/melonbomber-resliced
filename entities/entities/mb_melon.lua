@@ -75,7 +75,7 @@ function ENT:Initialize()
 
 	self.CreateTime = CurTime()
 	self.ExplodeTime = CurTime() + 3
-	
+	self.DonePrediction = false
 end
 
 if ( CLIENT ) then
@@ -179,6 +179,22 @@ end
 
 function ENT:Think()
 	if SERVER then
+		if (IsValid(self:GetBombOwner()) and not self.DonePrediction) then
+			self.DonePrediction = true
+			if (self:GetBombOwner():HasUpgrade(10)) then
+				if zone then
+					local x, y = GAMEMODE:GetGridPosFromEntZone(zone, self)
+					if x then
+						GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self, combiner)
+					end
+				else
+					local zone, x, y = GAMEMODE:GetGridPosFromEnt(self)
+					if zone then
+						GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self)
+					end
+				end
+			end
+		end
 		for k, ply in pairs(player.GetAll()) do
 			if ply:Alive() && !self:GetNWBool("MelonCollide" .. ply:EntIndex()) then
 				local t = self:GetPos() - ply:GetPos()

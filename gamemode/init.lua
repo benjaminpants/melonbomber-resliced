@@ -48,6 +48,7 @@ GM.MapMaxArea = CreateConVar("mb_map_maxarea", 500, bit.bor(FCVAR_NOTIFY), "Max 
 GM.DeathBlocksTime = CreateConVar("mb_deathblocks_time", 2 * 60, bit.bor(FCVAR_NOTIFY), "Amount of time before death blocks start decreasing the map size" )
 GM.StartWaitTime = CreateConVar("ph_mapstartwait", 30, bit.bor(FCVAR_NOTIFY), "Number of seconds to wait for players on map start before starting round" )
 GM.MaxPBombs = CreateConVar("mb_max_bombs", 9, bit.bor(FCVAR_NOTIFY), "Max amount of bombs per player (default 9)" )
+GM.PowerUpChance = CreateConVar("mb_powerup_chance", 3, bit.bor(FCVAR_NOTIFY), "Chance of a power up spawning, one in X. (default 3)" )
 GM.MaxPSpeed = CreateConVar("mb_max_speed", 9, bit.bor(FCVAR_NOTIFY), "Max speed per player (default 9)" )
 GM.MaxPPower = CreateConVar("mb_max_power", 9, bit.bor(FCVAR_NOTIFY), "Max power per player (default 9)" )
 

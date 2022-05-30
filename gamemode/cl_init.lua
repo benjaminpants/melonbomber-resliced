@@ -215,6 +215,15 @@ net.Receive("pk_elecplosion", function (len)
 	util.Effect("pk_elecplosion", eff, true, true)
 end)
 
+net.Receive("pk_elecpredict", function (len)
+	local eff = EffectData()
+	eff:SetOrigin(net.ReadVector())
+	eff:SetScale(net.ReadDouble())
+	eff:SetMagnitude(net.ReadDouble())
+	util.Effect("cball_bounce", eff, true, true)
+end)
+
+
 function GM:StartChat()
 	if IsValid(self.EndRoundPanel) && self.EndRoundPanel:IsVisible() then
 		timer.Simple(0, function () chat.Close() end)

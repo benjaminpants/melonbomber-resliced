@@ -157,6 +157,95 @@ function GM:CombineExplosion(zone, x, y, bomb, combiner)
 	end
 end
 
+function GM:PredictExplosion(zone, x, y, length, bomb, combiner, owner)
+	local combo = combiner or ClassGrid()
+	length = length or 1
+	self:CombinePredictedExplosion(zone, x, y, bomb, combo)
+
+	local function boom(i, nx, ny)
+		local sq = zone.grid:getSquare(nx, ny)
+		if IsValid(sq) then
+			if sq.gridType != "wall" then
+				self:CombinePredictedExplosion(zone, nx, ny, bomb, combo)
+			end
+			if sq:GetClass() == "mb_melon" || sq:GetClass() == "mb_pickup" || (sq.gridBreakable && bomb.GetPierce && bomb:GetPierce()) then
+				// keep going if we have pierce and it was a box
+			else
+				return true
+			end
+		else
+			self:CombinePredictedExplosion(zone, nx, ny, bomb, combo)
+		end
+		return false
+	end
+	// x+
+	for i = 1, length do
+		if boom(i, x + i, y) then break end
+	end
+
+	// x-
+	for i = 1, length do
+		if boom(i, x - i, y) then break end
+	end
+
+	// y+
+	for i = 1, length do
+		if boom(i, x, y + i) then break end
+	end
+
+	// y-
+	for i = 1, length do
+		if boom(i, x, y - i) then break end
+	end
+
+	local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
+	local t = Vector(x * zone.grid.sqsize, y * zone.grid.sqsize) + center
+	t.z = zone:OBBMins().z
+
+	local mag = 1
+	if bomb.GetPowerBomb && bomb:GetPowerBomb() then
+		mag = 2
+	end
+
+	if !combiner then
+		self:FinishPredictedExplosion(zone, combo, mag, bomb:GetBombOwner())
+	end
+	
+end
+
+util.AddNetworkString("pk_elecpredict")
+function GM:FinishPredictedExplosion(zone, combo, mag, attacker)
+	for k, v in pairs(combo.squares) do
+		local x, y = k:match("([^:]+):([^:]+)")
+		x = tonumber(x)
+		y = tonumber(y)
+		net.Start("pk_elecpredict")
+		local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
+		local t = Vector(x * zone.grid.sqsize, y * zone.grid.sqsize) + center
+		t.z = zone:OBBMins().z
+		net.WriteVector(t + Vector(0, 0, 15))
+		net.WriteDouble(zone.grid.sqsize / 2)
+		net.WriteDouble(mag)
+		net.Send(attacker)
+	end
+end
+
+function GM:CombinePredictedExplosion(zone, x, y, bomb, combiner)
+	combiner:setSquare(x, y, bomb)
+	local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
+	local t = Vector(x * zone.grid.sqsize, y * zone.grid.sqsize) + center
+	t.z = zone:OBBMins().z
+
+	local ent = zone.grid:getSquare(x, y)
+	if IsValid(ent) then
+		if ent.gridExplosive then
+			if !ent.HasExploded then
+				--self:PredictExplosion(zone, x, y, 5, ent, combiner)
+			end
+		end
+	end
+end
+
 util.AddNetworkString("pk_elecplosion")
 function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 	local center = (zone:OBBMins() + zone:OBBMaxs()) / 2
@@ -314,7 +403,7 @@ end
 function GM:CreatePickup(ent)
 	local zone, x, y = self:GetGridPosFromEnt(ent)
 	if zone then
-		if math.random(1, 3) == 1 then
+		if math.random(1, GetConVar("mb_powerup_chance"):GetInt()) == 1 then
 			local random = WeightedRandom()
 			for k, pickup in pairs(self.Pickups) do
 				if (pickup.Chance ~= nil) then
