@@ -1,4 +1,4 @@
-map.name = "Box paradise"
+map.name = "Box Paradise"
 map.description = "Lots of boxes with little amount of walls"
 
 function map:generateMap(grid)

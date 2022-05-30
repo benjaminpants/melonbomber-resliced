@@ -14,7 +14,7 @@ function PlayerMeta:GetMaxBombs()
 end
 
 function PlayerMeta:SetMaxBombs(amo)
-	self.MaxBombs = math.Clamp(amo or 1, 1, 9)
+	self.MaxBombs = math.Clamp(amo or 1, 1, GetConVar("mb_max_bombs"):GetInt())
 	self:NetworkUpgrades()
 end
 
@@ -23,7 +23,7 @@ function PlayerMeta:GetRunningBoots()
 end
 
 function PlayerMeta:SetRunningBoots(amo)
-	self.RunningBoots = math.Clamp(amo or 1, 1, 9)
+	self.RunningBoots = math.Clamp(amo or 1, 1, GetConVar("mb_max_speed"):GetInt())
 	self:CalculateSpeed()
 	self:NetworkUpgrades()
 end
@@ -33,7 +33,7 @@ function PlayerMeta:GetBombPower()
 end
 
 function PlayerMeta:SetBombPower(amo)
-	self.PowerUps = math.Clamp(amo or 1, 1, 9)
+	self.PowerUps = math.Clamp(amo or 1, 1, GetConVar("mb_max_power"):GetInt())
 	self:NetworkUpgrades()
 end
 

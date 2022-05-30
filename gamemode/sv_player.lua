@@ -408,21 +408,6 @@ function GM:PlayerDeath(ply, inflictor, attacker )
 	end
 	
 	--self:RagdollSetDeathDetails(ply, inflictor, attacker)
-	
-	Msg("Got kill");
-	Msg("attacker:GetName()" .. " killed" .. ply:GetName());
-	local cte = ChatText()
-	cte:Add("Dead!")
-	cte:SendAll()
-	local ct = ChatText()
-	local col = attacker:GetPlayerColor()
-	col = Color(col.r * 255, col.g * 255, col.b * 255)
-	ct:Add(attacker:GetName(), col)
-	ct:Add(" killed ")
-	local cole = ply:GetPlayerColor()
-	cole = Color(cole.r * 255, cole.g * 255, cole.b * 255)
-	ct:Add(ply:GetName(), cole)
-	ct:SendAll()
 
 	self:AddKillFeed(ply, inflictor, attacker)
 end

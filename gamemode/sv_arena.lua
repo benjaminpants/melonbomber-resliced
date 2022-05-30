@@ -217,15 +217,6 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 						else
 							dmg:SetAttacker(bomb)
 						end
-						local ct = ChatText()
-						local col = attacker:GetPlayerColor()
-						col = Color(col.r * 255, col.g * 255, col.b * 255)
-						ct:Add(attacker:GetName(), col)
-						ct:Add(" killed ")
-						local cole = ent:GetPlayerColor()
-						cole = Color(cole.r * 255, cole.g * 255, cole.b * 255)
-						ct:Add(ent:GetName(), cole)
-						ct:SendAll()
 						dmg:SetDamagePosition(bomb:GetPos())
 						dmg:SetDamageForce((ent:GetShootPos() - bomb:GetPos()):GetNormal() * 10 )
 					else
