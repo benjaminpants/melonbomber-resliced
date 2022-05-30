@@ -194,7 +194,9 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 				ent:Remove()
 			end
 		elseif ent:GetClass() == "mb_pickup" then
-			ent:Remove()
+			if (not attacker:HasUpgrade(9)) then
+				ent:Remove()
+			end
 		end
 	end
 
@@ -315,7 +317,9 @@ function GM:CreatePickup(ent)
 		if math.random(1, 3) == 1 then
 			local random = WeightedRandom()
 			for k, pickup in pairs(self.Pickups) do
-				random:Add(pickup.Chance or 1, pickup.id)
+				if (pickup.Chance ~= nil) then
+					random:Add(pickup.Chance:GetInt(), pickup.id)
+				end
 			end
 			local pick = self:CreatePowerup(random:Roll(), zone, x, y)
 			return pick

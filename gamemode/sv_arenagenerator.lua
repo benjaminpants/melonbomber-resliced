@@ -39,6 +39,8 @@ end
 // 2 is pos y
 // 3 is neg x
 
+--TODO: this system is not very flexible
+
 function Gen:createBox(x, y, strength, explosive)
 	local angles = Angle(0, 0, 0)
 

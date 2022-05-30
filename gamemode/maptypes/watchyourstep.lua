@@ -24,7 +24,7 @@ function map:generateMap(grid)
 	end
 
 	--some extra explosives.
-	for i=1, math.Clamp(math.ceil(((grid.maxx + grid.maxy) / 5)),1,999) do
+	for i=1, math.Clamp(math.ceil(((grid.maxx + grid.maxy) / 4)),1,999) do
 		local x = math.random(grid.minx, grid.maxx)
 		local y = math.random(grid.miny, grid.maxy)
 		grid:setExplosiveBox(x, y)

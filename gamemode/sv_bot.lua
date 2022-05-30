@@ -1,5 +1,5 @@
 
-
+--bots are just for funsies, but i can probably make them smarter if i wanted to
 function GM:BotMove(ply, cmd)
 	local zone, x, y = self:GetGridPosFromEnt(ply)
 	if zone then
@@ -20,6 +20,22 @@ function GM:BotMove(ply, cmd)
 		end
 
 		if ply.BotTarget then
+			if (math.random(1,700) == 1) then
+				cmd:SetButtons(IN_ATTACK)
+				ply.BotTarget = Vector(ply.BotTarget.x * -2, ply.BotTarget.y * -2) --should make it run away?? maybe??
+			end
+			if (math.random(1,400) == 1) then
+				cmd:SetButtons(IN_ATTACK2)
+			end
+			for k, v in pairs(ents.FindByClass("mb_melon")) do
+				if (v:GetPos():Distance(ply:GetPos()) <= 78) then
+					cmd:SetForwardMove(-999) --hope this makes it run away
+					return
+				end
+			end
+		end
+
+		if ply.BotTarget then
 			local tx, ty = ply.BotTarget.x, ply.BotTarget.y
 			local gcenter = (zone:OBBMins() + zone:OBBMaxs()) / 2
 			local t = Vector(tx * zone.grid.sqsize, ty * zone.grid.sqsize) + gcenter
@@ -34,7 +50,7 @@ function GM:BotMove(ply, cmd)
 					ply.BotTarget = nil
 				end
 				cmd:SetViewAngles(look:Angle())
-				cmd:SetForwardMove(70)
+				cmd:SetForwardMove(999)
 			end
 		end
 	end
