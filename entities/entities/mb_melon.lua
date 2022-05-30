@@ -181,17 +181,15 @@ function ENT:Think()
 	if SERVER then
 		if (IsValid(self:GetBombOwner()) and not self.DonePrediction) then
 			self.DonePrediction = true
-			if (self:GetBombOwner():HasUpgrade(10)) then
+			if zone then
+				local x, y = GAMEMODE:GetGridPosFromEntZone(zone, self)
+				if x then
+					GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self, combiner)
+				end
+			else
+				local zone, x, y = GAMEMODE:GetGridPosFromEnt(self)
 				if zone then
-					local x, y = GAMEMODE:GetGridPosFromEntZone(zone, self)
-					if x then
-						GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self, combiner)
-					end
-				else
-					local zone, x, y = GAMEMODE:GetGridPosFromEnt(self)
-					if zone then
-						GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self)
-					end
+					GAMEMODE:PredictExplosion(zone, x, y, self:GetExplosionLength(), self)
 				end
 			end
 		end

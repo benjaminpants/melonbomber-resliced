@@ -1,5 +1,5 @@
 map.name = "Checkerboard";
-map.description = "Wanna play some checkers?"
+map.description = "A checkboard of hard and soft boxes with a few explosives placed randomly"
 
 function map:generateMap(grid)
 	local i = 1

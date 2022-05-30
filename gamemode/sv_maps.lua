@@ -31,6 +31,10 @@ function SGrid:setWall(x, y)
 	self.grid[x .. ":" .. y] = "w"
 end
 
+function SGrid:setTile(x, y, t)
+	self.grid[x .. ":" .. y] = t
+end
+
 function SGrid:isWall(x, y)
 	return self.grid[x .. ":" .. y] == "w"
 end
@@ -49,6 +53,10 @@ end
 
 function SGrid:isHardBox(x, y)
 	return self.grid[x .. ":" .. y] == "h"
+end
+
+function SGrid:getTile(x, y)
+	return self.grid[x .. ":" .. y]
 end
 
 function SGrid:setExplosiveBox(x, y)

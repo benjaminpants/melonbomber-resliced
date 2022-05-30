@@ -208,7 +208,11 @@ function GM:PredictExplosion(zone, x, y, length, bomb, combiner, owner)
 	end
 
 	if !combiner then
-		self:FinishPredictedExplosion(zone, combo, mag, bomb:GetBombOwner())
+		for i, v in ipairs( player.GetAll() ) do
+			if (v:HasUpgrade(10)) then
+				self:FinishPredictedExplosion(zone, combo, mag, v)
+			end
+		end
 	end
 	
 end
