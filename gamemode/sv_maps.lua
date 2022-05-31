@@ -31,7 +31,7 @@ function SGrid:setWall(x, y)
 	self.grid[x .. ":" .. y] = "w"
 end
 
-function SGrid:setTile(x, y, t)
+function SGrid:setTileRaw(x, y, t)
 	self.grid[x .. ":" .. y] = t
 end
 
@@ -70,9 +70,6 @@ end
 function SGrid:getPrintChar(x, y)
 	local c = self.grid[x .. ":" .. y]
 	if c == nil then return " " end
-	if c == "w" then return "#" end
-	if c == "b" then return "." end
-	if c == "h" then return "&" end
 
 	return "?"
 end

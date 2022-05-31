@@ -72,7 +72,9 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	if DeathRagdollsPerServer >= 0 && c2 > DeathRagdollsPerServer then
 		for i = 0,c2 do
 			if c2 > DeathRagdollsPerServer then
-				GAMEMODE.DeathRagdolls[1]:Remove()
+				if (GAMEMODE.DeathRagdolls[1] ~= nil) then
+					GAMEMODE.DeathRagdolls[1]:Remove()
+				end
 				table.remove(GAMEMODE.DeathRagdolls,1)
 				c2 = c2 - 1
 			else
