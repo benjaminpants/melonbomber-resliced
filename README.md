@@ -1,4 +1,5 @@
 ![MelonBomber Resliced](/logo.png)
+
 Melon Bomber Resliced is a fork of melon bomber that plans to expand its replayability and moddability.
 
 Resliced currently features the following:
