@@ -28,10 +28,12 @@ end
 
 Possible block types
 ```lua
-setWall(x, y)
-setBox(x, y)
-setHardBox(x, y)
-setExplosiveBox(x, y)
+setWall(x, y) --any unbreakable wall tile
+setBox(x, y) --any easily breakable tiles
+setHardBox(x, y) --any pretty hard tiles
+setExplosiveBox(x, y) --any explosive tiles
+setTileRaw(x,y, typename) --set a tile directly
+setEmpty(x,y)
 ```
 
 Place a 96 x 96 png image of your map in garrysmod/materials/melonbomber/maptypes

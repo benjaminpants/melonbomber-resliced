@@ -21,14 +21,24 @@ Based on the game Bomberman, Melonbomber brings the same hectic, fast paced game
 ==CONTROLS==
 WASD to move around
 LEFT CLICK to place a bomb
+RIGHT CLICK to use a special ability.
 
 ==OBJECTIVES==
 The aim of the game is to take out the other players by blowing them up with your bombs
 ]])
 
-addHelpText("Powerups", 1, [[
-Powerups can be found inside crates on the map. Blow up the crates to reveal powerups. Walk over the powerup to pick it up.
-]])
+local current_powerup_help_text = [[
+	Powerups can be found inside crates on the map. Blow up the crates to reveal powerups. 
+	Walk over a powerup to pick it up.
+	]]
+
+for i=1, #(GM or GAMEMODE).Pickups do
+	local pickup = (GM or GAMEMODE).Pickups[i]
+	current_powerup_help_text = current_powerup_help_text .. "\n==" .. pickup.name .. "==\n" .. pickup.Description .. "\n"
+end
+
+
+addHelpText("Powerups", 1, current_powerup_help_text)
 
 local function colMul(color, mul)
 	color.r = math.Clamp(math.Round(color.r * mul), 0, 255)

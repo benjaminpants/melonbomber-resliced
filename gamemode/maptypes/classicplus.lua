@@ -1,4 +1,4 @@
-map.name = "Classic + Special"
+map.name = "Classic+"
 map.description = "The classic map plus special boxes"
 
 function map:generateMap(grid)

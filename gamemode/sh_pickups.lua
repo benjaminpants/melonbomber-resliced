@@ -9,7 +9,9 @@ GM.addPickup = function(id, ref_name, name, color, model, chance)
 	tab.name = name
 	tab.Chance = chance
 	tab.ref_name = ref_name
-	tab.Chance = CreateConVar("mb_chance_" .. tab.ref_name, tab.Chance, bit.bor(FCVAR_NOTIFY), "The weighted value of " .. tab.name )
+	if (SERVER) then
+		tab.Chance = CreateConVar("mb_chance_" .. tab.ref_name, tab.Chance, bit.bor(FCVAR_NOTIFY), "The weighted value of " .. tab.name )
+	end
 	tab.color = color
 	tab.model = model;
 	(GM or GAMEMODE).Pickups[id] = tab
