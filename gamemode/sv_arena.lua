@@ -150,8 +150,10 @@ function GM:CombineExplosion(zone, x, y, bomb, combiner)
 			ent:Explode(zone, combiner)
 		elseif ent.gridExplosive then
 			if !ent.HasExploded then
-				ent.HasExploded = true
-				self:CreateExplosion(zone, x, y, 5, ent, combiner)
+				local ttype = GAMEMODE.FindTileTypeByName(ent.gridTileType)
+				if (ttype.OnExplode ~= nil) then
+					ttype.OnExplode(self, zone, x, y, ent, combiner)
+				end
 			end
 		end
 	end
@@ -812,7 +814,7 @@ function GM:ArenaNextDeathBlock(zone)
 	end
 
 	local gen = ClassGenerator(zone.grid, zone:OBBMins(), zone:OBBMaxs(), 2, 2)
-	local ent = gen:createWall(x, y, 2)
+	local ent = gen:CreateBox(x, y, "wall", true)
 	if IsValid(ent) then
 		ent:EmitSound("physics/metal/metal_box_impact_soft" .. math.random(1, 3) .. ".wav")
 	end

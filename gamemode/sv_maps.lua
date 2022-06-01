@@ -28,31 +28,19 @@ function SGrid:setEmpty(x, y)
 end
 
 function SGrid:setWall(x, y)
-	self.grid[x .. ":" .. y] = "w"
+	self.grid[x .. ":" .. y] = "wall"
 end
 
 function SGrid:setTileRaw(x, y, t)
 	self.grid[x .. ":" .. y] = t
 end
 
-function SGrid:isWall(x, y)
-	return self.grid[x .. ":" .. y] == "w"
-end
-
 function SGrid:setBox(x, y)
-	self.grid[x .. ":" .. y] = "b"
-end
-
-function SGrid:isBox(x, y)
-	return self.grid[x .. ":" .. y] == "b"
+	self.grid[x .. ":" .. y] = "box"
 end
 
 function SGrid:setHardBox(x, y)
-	self.grid[x .. ":" .. y] = "h"
-end
-
-function SGrid:isHardBox(x, y)
-	return self.grid[x .. ":" .. y] == "h"
+	self.grid[x .. ":" .. y] = "strong_box"
 end
 
 function SGrid:getTile(x, y)
@@ -60,11 +48,7 @@ function SGrid:getTile(x, y)
 end
 
 function SGrid:setExplosiveBox(x, y)
-	self.grid[x .. ":" .. y] = "e"
-end
-
-function SGrid:isExplosiveBox(x, y)
-	return self.grid[x .. ":" .. y] == "e"
+	self.grid[x .. ":" .. y] = "explosive"
 end
 
 function SGrid:getPrintChar(x, y)

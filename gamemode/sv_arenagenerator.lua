@@ -39,9 +39,59 @@ end
 // 2 is pos y
 // 3 is neg x
 
+
 --TODO: this system is not very flexible
 
-function Gen:createBox(x, y, strength, explosive)
+function Gen:CreateBox(x,y, type_name, extra_params)
+	local type = GAMEMODE.FindTileTypeByName(type_name) or GAMEMODE.TileTypes[1]
+
+	local angles = Angle(0, 0, 0)
+
+	local size = 20
+	local add = self.center + Vector(self.grid.sqsize, 0, 0) * x  + Vector(0, self.grid.sqsize, 0) * y
+	local pos = add * 1
+	pos.z = self.mins.z
+
+	local ent = self:spawnProp(pos, angles, "models/hunter/blocks/cube075x075x075.mdl")
+	ent:SetMaterial(type.Material)
+	if (type.OnVisualsInit) then
+		type.OnVisualsInit(ent, extra_params)
+	end
+
+	local phys = ent:GetPhysicsObject() --does this even do anything???
+	if IsValid(phys) then
+	end
+
+	pos.z = pos.z - ent:OBBMins().z + math.Rand(0, 0.05) - 4
+	ent:SetPos(pos)
+
+	ent.gridX = x
+	ent.gridY = y
+	if (not type.BlockExplosions) then
+		ent.gridType = "box"
+	else
+		ent.gridType = "wall"
+	end
+	ent.gridTileType = type_name
+	ent.gridWalkable = type.Walkable or true
+	ent.gridBreakable = type.Strength ~= 0
+	ent.gridSolid = true
+	ent.gridStrength = type.Strength or 1
+	ent.gridMaxStrength = type.Strength or 1
+	ent.gridExplosive = type.OnExplode ~= nil
+
+	self.grid:setSquare(x, y, ent)
+
+	if (type.PostInit) then
+		type.PostInit(ent, extra_params)
+	end
+
+	return ent
+
+end
+
+
+function Gen:createBoxOLD(x, y, strength, explosive)
 	local angles = Angle(0, 0, 0)
 
 	local size = 20
@@ -153,27 +203,21 @@ function Gen:generate()
 	// generate map
 	for x = grid.minx, grid.maxx do
 		for y = grid.miny, grid.maxy do
-			if grid:isWall(x, y) then
-				self:createWall(x, y)
-			elseif grid:isHardBox(x, y) then
-				self:createBox(x, y, 3)
-			elseif grid:isExplosiveBox(x, y) then
-				self:createBox(x, y, 1, true)
-			elseif grid:isBox(x, y) then
-				self:createBox(x, y)
+			if (grid:getEmpty(x,y)) then
+				self:CreateBox(x, y, grid:getTile(x,y))
 			end
 		end
 	end
 
 	// generate walls around map
 	for i = -self.grid.sizeLeft - 1, self.grid.sizeRight + 1 do 
-		self:createWall(i, -self.grid.sizeUp - 1, 2)
-		self:createWall(i, self.grid.sizeDown + 1, 2)
+		self:CreateBox(i, -self.grid.sizeUp - 1, "wall", true)
+		self:CreateBox(i, self.grid.sizeDown + 1, "wall", true)
 	end
 
 	for i = -self.grid.sizeUp, self.grid.sizeDown do
-		self:createWall(-self.grid.sizeLeft - 1, i, 2)
-		self:createWall(self.grid.sizeRight + 1, i, 2)
+		self:CreateBox(-self.grid.sizeLeft - 1, i, "wall", true)
+		self:CreateBox(self.grid.sizeRight + 1, i, "wall", true)
 	end
 
 end
