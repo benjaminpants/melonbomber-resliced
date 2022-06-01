@@ -455,8 +455,28 @@ function GM:PlayerSay( ply, text, team)
 	return false
 end
 
+local bot_name_start = {"Funny ", "Silly ", "Goofy ", "Pro ", "Gamer ", "Epic ", "Swagger ", "MC_", "YT_", "Sparkly ", "Xx_", "69", "Mario ", "r3tked-", "CARz_"}
+
+local bot_name_middle = {"Mario", "Billy", "Sally", "John", "Noah", "Sonic", "Amelia", "Squid", "Gamer", "Kitty", "Dog", "Barkster", "SwagMan", "Oliver"}
+
+local bot_name_end = {"_xX", "Fan", "69", "_Troller", "_Beloved"}
+
+local bot_names_full = {"xX8JIMMY_DRIVE8Xx", "Not A Robot I swear", "SomePerson", "CornMan1", "Rambi_Zratch", "XX123GaMER123XX", "IcedMage800", "PreyNightly132", "GuyWhoLovesCars", "Omega Chad", "GLaDOS' Twin Brother", "info_player_start", "The Crocketeer", "Education is Stupid", "IHaveBadOpinions", "IHaveBetterOpinions", "WHYMEEEEEEEEE", "Alone On a Late Night", "You are Pathetic", "FrostyTheWarCriminal", "FruitNinja", "FruitNinjasRetirement", "IAmVeryDumb", "IvanTheSpaceBiker", "GarryIsThatYou", "ReallyObviousFakeUsername", "BillyBobJonas", "SnailGame", "EepsIsPuzzled", "TohnJron", "JacobPurpleEye", "SHEISMYMOTHERBUTIAMNOTHERCHILD", "ObscureVideoGameReferenceLover", "TheChadTTTPlayer", "TheVirginMurderPlayer", "AmICoolYetMom", "MommasBoy", "TransRightsAreHumanRights", "IsItPrideMonthYet", "IAmVerySleepy", "Wheatley Crab Hahaha", "0Never", "1Gonna", "2Give", "3You", "4Up", "HowRareAreThePreviousNames", "Lightning McFart", "EpicNoscoper420BLAZEIT", "EpicMelonBomber360SCOPED", "pwned", "The Regular Persons In", "RealManEpicSkateboard123", "I am a Man", "I am NOT a Cow", "FortniteReference555"}
+
+
+local function GetBotName()
+	if (math.random(1,9) == 1) then
+		return table.Random(bot_name_start) .. table.Random(bot_name_middle) .. table.Random(bot_name_end) .. math.random(667)
+	end
+	return table.Random(bot_names_full)
+end
+
+
 function GM:StartCommand(ply, cmd)
 	if ply:IsBot() then
+		if (ply:GetNWString("FakeName") == "") then
+			ply:SetNWString("FakeName",GetBotName())
+		end
 		cmd:SetForwardMove(0)
 		cmd:SetSideMove(0)
 		self:BotMove(ply, cmd)

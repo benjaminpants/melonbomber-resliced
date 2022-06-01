@@ -22,6 +22,14 @@ function GM:FinishMove(ply, mv)
 
 end
 
+--VERY STUPID BUT IT WORKS?
+meta = FindMetaTable( "Player" )
+local old_name = meta.Nick
+function meta:Nick()
+    if self:GetNWString("FakeName") ~= "" then return self:GetNWString("FakeName") end
+    return old_name(self)
+end
+
 function GM:ShouldCollide(ent1, ent2)
 	if !IsValid(ent1) then return true end
 	if !IsValid(ent2) then return true end
