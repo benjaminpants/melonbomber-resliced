@@ -27,6 +27,7 @@ end
 GM.addTile("Box","box", {
     Material = "models/props/CS_militia/roofbeams03",
     Strength = 1,
+    OnDestroy = nil,
     BlockExplosions = false,
     OnVisualsInit = function(ent, extra_data)
         local b = math.random(200, 255)
@@ -39,6 +40,16 @@ GM.addTile("Box","box", {
 GM.addTile("Stone","strong_box", {
     Material = "models/props_c17/metalladder002",
     Strength = 3,
+    GibType = "brick",
+    OnExplode = nil,
+    OnVisualsInit = nil
+})
+
+GM.addTile("Metal","metal_box", {
+    Material = "phoenix_storms/cube",
+    Strength = 7,
+    GibType = "metal",
+    SpawnClearable = false,
     OnExplode = nil,
     OnVisualsInit = nil
 })
@@ -46,6 +57,7 @@ GM.addTile("Stone","strong_box", {
 GM.addTile("TNT","explosive", {
     Material = "models/props_c17/canister02a",
     Strength = 1,
+    GibType = "metal",
     OnExplode = function(gm, zone, x, y, ent, combiner) --TODO: FIGURE OUT WHY TF GM IS NIL AND FIX IT. UGH.
         ent.HasExploded = true
 		gm:CreateExplosion(zone, x, y, 5, ent, combiner)

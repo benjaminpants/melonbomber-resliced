@@ -1,5 +1,5 @@
 map.name = "Pillars"
-map.description = "Tall unbreakable pillars with a singular explosive tile as a way of entry."
+map.description = "Tall super sturdy pillars with a singular explosive tile as a way of entry."
 
 
 local function array_contains_value(value,array)
@@ -31,11 +31,7 @@ function map:generateMap(grid)
 					end
 				end
 			else
-				if (math.random(1,15) == 1) then
-					grid:setHardBox(x,y)
-				else
-					grid:setWall(x, y)
-				end
+				grid:setTileRaw(x,y, "metal_box")
 			end
 		end 
 	end

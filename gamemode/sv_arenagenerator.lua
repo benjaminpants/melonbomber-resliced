@@ -74,11 +74,13 @@ function Gen:CreateBox(x,y, type_name, extra_params)
 	end
 	ent.gridTileType = type_name
 	ent.gridWalkable = type.Walkable or true
+	ent.gibType = type.GibType or "wood"
 	ent.gridBreakable = type.Strength ~= 0
 	ent.gridSolid = true
 	ent.gridStrength = type.Strength or 1
 	ent.gridMaxStrength = type.Strength or 1
 	ent.gridExplosive = type.OnExplode ~= nil
+	ent.gridSpawnClearable = type.SpawnClearable or true
 
 	self.grid:setSquare(x, y, ent)
 
@@ -88,47 +90,6 @@ function Gen:CreateBox(x,y, type_name, extra_params)
 
 	return ent
 
-end
-
-
-function Gen:createBoxOLD(x, y, strength, explosive)
-	local angles = Angle(0, 0, 0)
-
-	local size = 20
-	local add = self.center + Vector(self.grid.sqsize, 0, 0) * x  + Vector(0, self.grid.sqsize, 0) * y
-	local pos = add * 1
-	pos.z = self.mins.z
-
-	local ent = self:spawnProp(pos, angles, "models/hunter/blocks/cube075x075x075.mdl")
-	if explosive then
-		ent:SetMaterial("models/props_c17/canister02a")
-	elseif strength && strength > 1 then
-		ent:SetMaterial("models/props_c17/metalladder002")
-	else
-		ent:SetMaterial("models/props/CS_militia/roofbeams03")
-		local b = math.random(200, 255)
-		ent:SetColor(Color(255, b, b))
-	end
-	local phys = ent:GetPhysicsObject()
-	if IsValid(phys) then
-	end
-
-	pos.z = pos.z - ent:OBBMins().z + math.Rand(0, 0.05) - 4
-	ent:SetPos(pos)
-
-	ent.gridX = x
-	ent.gridY = y
-	ent.gridType = "box"
-	ent.gridWalkable = true
-	ent.gridBreakable = true
-	ent.gridSolid = true
-	ent.gridStrength = strength or 1
-	ent.gridMaxStrength = strength or 1
-	ent.gridExplosive = explosive or false
-	table.insert(self.crates, ent)
-
-	self.grid:setSquare(x, y, ent)
-	return ent
 end
 
 function Gen:createWall(x, y, t)

@@ -278,15 +278,20 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 	local ent = zone.grid:getSquare(x, y)
 	if IsValid(ent) then
 		if ent.gridBreakable then
-			if !(bomb.GetPowerBomb && bomb:GetPowerBomb()) && ent.gridStrength > 1 then
-				self:GibCrate(ent)
-				ent.gridStrength = ent.gridStrength - 1
-				local b = ent.gridStrength / ent.gridMaxStrength * 150 + (255 - 150)
-				ent:SetColor(Color(b, b, b))
+			local ttype = GAMEMODE.FindTileTypeByName(ent.gridTileType)
+			if (ttype.OnDestroy) then
+				ttype.OnDestroy(self, zone, x, y, ent, bomb, attacker)
 			else
-				self:GibCrate(ent)
-				self:CreatePickup(ent)
-				ent:Remove()
+				if !(bomb.GetPowerBomb && bomb:GetPowerBomb()) && ent.gridStrength > 1 then
+					self:GibCrate(ent)
+					ent.gridStrength = ent.gridStrength - 1
+					local b = ent.gridStrength / ent.gridMaxStrength * 150 + (255 - 150)
+					ent:SetColor(Color(b, b, b))
+				else
+					self:GibCrate(ent)
+					self:CreatePickup(ent)
+					ent:Remove()
+				end
 			end
 		elseif ent:GetClass() == "mb_pickup" then
 			if (not attacker:HasUpgrade(9)) then
@@ -380,12 +385,14 @@ function GM:GibCrate(ent)
 	for i = 1, math.random(1, maxGibs) do
 		local gib = ents.Create("prop_physics")
 		gib:SetPos(ent:GetPos() + Vector(0, 0, 30))
-		if ent.gridExplosive then
-			gib:SetModel(table.Random(explosiveGibs))
-		elseif ent.gridMaxStrength > 1 then
-			gib:SetModel(table.Random(brickGibs))
-		else
-			gib:SetModel(table.Random(woodGibs))
+		if type(ent.gibType) == "string" then
+			if (ent.gibType == "metal") then
+				gib:SetModel(table.Random(explosiveGibs))
+			elseif (ent.gibType == "brick") then
+				gib:SetModel(table.Random(brickGibs))
+			else
+				gib:SetModel(table.Random(woodGibs))
+			end
 		end
 		gib:SetAngles(AngleRand())
 		gib:SetMaterial(ent:GetMaterial())
@@ -665,7 +672,7 @@ function GM:ClearBoxesAroundSquare(zone, x, y, len)
 		local pos = ent:GetPos()
 		if pos.x > mins.x && pos.x < maxs.x then
 			if pos.y > mins.y && pos.y < maxs.y then
-				if ent.gridBreakable then
+				if ent.gridBreakable and ent.gridSpawnClearable then
 					ent:Remove()
 				end
 			end
