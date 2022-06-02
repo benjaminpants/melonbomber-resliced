@@ -55,6 +55,8 @@ function GM:PlayerSpawn( ply )
 
 	ply:UnCSpectate()
 
+	ply.CanTaunt = true
+
 	player_manager.OnPlayerSpawn( ply )
 	player_manager.RunClass( ply, "Spawn" )
 
@@ -482,3 +484,25 @@ function GM:StartCommand(ply, cmd)
 		self:BotMove(ply, cmd)
 	end
 end
+
+(GM or GAMEMODE).ValidMaleTaunts = {"vo/npc/male01/likethat.wav", "vo/npc/male01/uhoh.wav", "vo/npc/male01/nice.wav", "vo/npc/male01/gotone01.wav"}
+
+(GM or GAMEMODE).ValidFemaleTaunts = {"vo/npc/female01/likethat.wav", "vo/npc/female01/uhoh.wav", "vo/npc/female01/nice01.wav", "vo/npc/female01/gotone01.wav"}
+
+hook.Add( "KeyPress", "keypress_reload_taunt", function( ply, key )
+	if ( key == IN_RELOAD and ply.CanTaunt and ply:Alive()) then
+		local snd = ""
+		if (ply.ModelSex == "male") then
+			snd = table.Random((GM or GAMEMODE).ValidMaleTaunts)		
+		else
+			snd = table.Random((GM or GAMEMODE).ValidFemaleTaunts)
+		end
+		ply:EmitSound(snd)
+		ply.CanTaunt = false
+		timer.Simple( 5, function() --this has its flaws, but it's a start.
+			if (IsValid(ply)) then
+				ply.CanTaunt = true
+			end
+		end)
+	end
+end )
