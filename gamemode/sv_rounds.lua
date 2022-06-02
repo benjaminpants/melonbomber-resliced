@@ -95,7 +95,11 @@ function GM:SetupRound()
 			ply:Spawn()
 
 			local col = self:AssignColor(i, c)
-			ply:SetPlayerColor(Vector(col.r / 255, col.g / 255, col.b / 255))
+			if (GetConVar("mb_powerup_playercolors"):GetBool()) then
+				ply:UpdateColorOffOfUpgrades()
+			else
+				ply:SetPlayerColor(Vector(col.r / 255, col.g / 255, col.b / 255))
+			end
 			i = i + 1
 
 			ply:Freeze(true)

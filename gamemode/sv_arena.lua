@@ -326,7 +326,7 @@ function GM:SpecificExplosion(zone, x, y, bomb, attacker)
 							dmg:SetAttacker(attacker)
 						end
 					end
-					dmg:SetDamage(400)
+					dmg:SetDamage(hook.Run("CalculateBombDamage", dmg:GetAttacker(), dmg:GetInflictor(), ent) or 400)
 					-- dmg:SetDamageType(DMG_BLAST)
 
 					// ulx likes to break stuff, thank you ulx

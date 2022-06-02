@@ -161,6 +161,8 @@ function Gen:generate()
 	local grid = MapMakerGrid(minx, miny, minx + self.width, miny + self.height)
 	maptype:generateMap(grid)
 
+	hook.Run("OnMapGenerated", grid)
+
 	// generate map
 	for x = grid.minx, grid.maxx do
 		for y = grid.miny, grid.maxy do

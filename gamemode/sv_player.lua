@@ -78,7 +78,11 @@ function GM:PlayerSpawn( ply )
 
 	local col = team.GetColor(ply:Team())
  	local vec = Vector(col.r / 255,col.g / 255,col.b / 255)
- 	ply:SetPlayerColor(vec)
+	if (GetConVar("mb_powerup_playercolors"):GetBool()) then
+		ply:UpdateColorOffOfUpgrades()
+	else
+ 		ply:SetPlayerColor(vec)
+	end
 
  	ply.LastSpawnTime = CurTime()
 end

@@ -247,6 +247,10 @@ function GM:DrawUpgrades()
 	self:DrawUpgrade("Bombs", self:GetMaxBombs(), Color(50,255,50), x, y)
 	self:DrawUpgrade("Speed", self:GetRunningBoots(), Color(0, 150, 255), x, y + f25 + 4)
 	self:DrawUpgrade("Power", self:GetBombPower(), Color(220,50,50), x, y + f25 * 2 + 4 * 2)
+	local display_health = false --this will be for gamemodes and stuff 
+	if (display_health) then
+		self:DrawUpgrade("Health", LocalPlayer():Health(), Color(255,230,0), x, y - (f25 + 4))
+	end
 
 	local f20 = draw.GetFontHeight("RobotoHUD-20")
 	local i = 0

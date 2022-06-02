@@ -48,6 +48,13 @@ function PlayerMeta:NetworkUpgrades()
 	end
 	net.WriteUInt(0, 16)
 	net.Send(self)
+	if (GetConVar("mb_powerup_playercolors"):GetBool()) then
+		self:UpdateColorOffOfUpgrades()
+	end
+end
+
+function PlayerMeta:UpdateColorOffOfUpgrades()
+	self:SetPlayerColor(Vector(self:GetBombPower() / GetConVar("mb_max_power"):GetInt(), self:GetMaxBombs() / GetConVar("mb_max_bombs"):GetInt(), self:GetRunningBoots() / GetConVar("mb_max_speed"):GetInt()))
 end
 
 util.AddNetworkString("melons_pickup_upgrade")
